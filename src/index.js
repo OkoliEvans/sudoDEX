@@ -9,13 +9,18 @@ import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum, goerli } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 
   const { chains, provider } = configureChains(
     [mainnet, polygon, optimism, arbitrum, goerli],
     [
-      alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
-      publicProvider()
+      jsonRpcProvider({
+        rpc: (chain) => ({
+          http: `https://eth-goerli.g.alchemy.com/v2/U4Q5B-2_p_WUMX2gBCL_ZYNpaRetbTgd`,
+          webSocket: `wss://eth-goerli.g.alchemy.com/v2/U4Q5B-2_p_WUMX2gBCL_ZYNpaRetbTgd`,
+        }),
+      }),
     ]
   );
 
@@ -36,7 +41,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
       <WagmiConfig client={wagmiClient}>
-        <RainbowKitProvider chains={chains}>
+        <RainbowKitProvider 
+        chains={chains}
+        showRecentTransactions={true}
+        modalSize="compact"
+        >
           <App />
         </RainbowKitProvider>
       </WagmiConfig>

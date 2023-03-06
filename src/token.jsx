@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
@@ -63,16 +64,16 @@ const Token = () => {
     ],
   });
 
-  const { config } = usePrepareContractWrite({
-    ...tokenContract,
-    functionName: "transfer",
-    args: [
-        recipientAddress
-        ? recipientAddress
-        : "0x000000000000000000000000000000000",
-        ethers.utils.parseEther(amount ? amount.toString() : "0"),
-    ],
-  });
+//   const { config } = usePrepareContractWrite({
+//     ...tokenContract,
+//     functionName: "transfer",
+//     args: [
+//         recipientAddress
+//         ? recipientAddress
+//         : "0x000000000000000000000000000000000",
+//         ethers.utils.parseEther(amount ? amount.toString() : "0"),
+//     ],
+//   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -88,7 +89,7 @@ const Token = () => {
     hash: sendData?.hash,
 
     onSuccess(data) {
-        return JSON.stringify(data);
+        console.log("SUCCESS: ", data);
     },
     onError(error) {
         console.log("ERROR", error);
@@ -172,7 +173,7 @@ const Token = () => {
             </button>
         </form>
     </div>
-    
+
 </div>
   );
 };

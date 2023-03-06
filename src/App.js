@@ -1,15 +1,12 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import './App.css';
-import token from './token';
-
+import React from 'react';
+import Token from './token';
 
 
 function App() {
   return (
-    <div className="App">
+    <div>
 
-      {/* <ConnectButton /> */}
-      <token />
+      < Token />
 
     </div>
   );
