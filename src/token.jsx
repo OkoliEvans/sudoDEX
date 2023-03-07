@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
   useAccount,
@@ -17,8 +16,8 @@ const tokenContract = {
   abi: TokenABI,
 };
 
-const Token = () => {
-  const { address, isDisconnected } = useAccount();
+function Token() {
+  const { address } = useAccount();
   // if(isDisconnected) return <div>"Wallet disconnected"</div>;
 
   const [ recipientAddress, setRecipientAddress ] = useState("");
@@ -32,7 +31,8 @@ const Token = () => {
     ...tokenContract,
     functionName: "balanceOf",
     args: [address ?? "0x0"],
-  });
+    
+    })
 
   const {
     data: tokenDetails,
@@ -40,12 +40,13 @@ const Token = () => {
     isLoading: loadingTokenDetails,
   } = useContractReads({
     contracts: [
-        { ...tokenContract, functionName: "decimals" },
-        { ...tokenContract, functionName: "symbol" },
-        { ...tokenContract, functionName: "totalSupply" },
-        { ...tokenContract, functionName: "balanceOf", args:[address ?? "0x0"] },
+      { ...tokenContract, functionName: "decimals" },
+      { ...tokenContract, functionName: "symbol" },
+      { ...tokenContract, functionName: "totalSupply" },
+      { functionName: "balanceOf", args: [address ?? "0x0"], ...tokenContract },
     ],
   });
+  
 
   const {
     data: sendData,
@@ -59,7 +60,7 @@ const Token = () => {
     args: [
         recipientAddress
         ? recipientAddress
-        : "0x00000000000000000000000000000000000000000000000000",
+        : "0x0000000000000000000000000000000000000000",
         ethers.utils.parseEther(amount ? amount.toString() : "0"),
     ],
   });
@@ -99,7 +100,6 @@ const Token = () => {
   if(sendWaitData) {
     console.log("Send wait data: ", sendWaitData);
   }
-
 
   return (
     <div>
@@ -162,10 +162,8 @@ const Token = () => {
             </div>
 
             <button className={`${
-                !amount || !recipientAddress
-                ? "cursor-not-allowed"
-                : "cursor-pointer"
-            } bg-teal-600 text-white px-10 py-4 w-full rounded-lg hover:bg-teal-900`}
+              !amount || !recipientAddress ? "cursor-not-allowed" : "cursor-pointer"
+            } bg-teal-600 text-white py-3 px-8 rounded-lg shadow-lg`}
             disabled={!amount || !recipientAddress}
             type="submit"
             >
